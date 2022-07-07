@@ -7,7 +7,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     public Rigidbody2D rb2D;
 
+    public GameObject gameWonPanel;
+
     public float speed;
+
+    private bool isGameWon = false;
     void Start()
     {
         
@@ -16,6 +20,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isGameWon==true)
+        {
+            return;
+            speed=0;
+        }
         if(Input.GetAxis("Horizontal") > 0)
         {
             rb2D.velocity = new Vector2(speed, 0f);
@@ -42,6 +51,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag == "Finish")
-        Debug.Log("level complete");
+        {
+            gameWonPanel.SetActive(true);
+            isGameWon = true;
+        }
+        
     }
 }
