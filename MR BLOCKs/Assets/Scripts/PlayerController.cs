@@ -12,14 +12,11 @@ public class PlayerController : MonoBehaviour
 
     public GameObject gameLostPanel;
 
-    public float speed;
+    public float speed = 5f;
 
     private bool isGameOver = false;
-    void Start()
-    {
-        
-    }
-
+    
+    Vector2 movement;
     // Update is called once per frame
     void Update()
     {
@@ -28,27 +25,20 @@ public class PlayerController : MonoBehaviour
             return;
             speed=0;
         }
-        if(Input.GetAxis("Horizontal") > 0)
-        {
-            rb2D.velocity = new Vector2(speed, 0f);
-        }
-        else if(Input.GetAxis("Horizontal") < 0)
-        {
-            rb2D.velocity = new Vector2(-speed, 0f);
-        }
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+    }
 
-        else if(Input.GetAxis("Vertical") > 0)
+   
+    private void FixedUpdate()
+    {
+         if(isGameOver==true)
         {
-            rb2D.velocity = new Vector2(0f, speed);
+            return;
+            speed=0;
         }
-        else if(Input.GetAxis("Vertical") < 0)
-        {
-            rb2D.velocity = new Vector2(0f, -speed); 
-        }
-        else if(Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
-        {
-            rb2D.velocity = new Vector2(0f, 0f); 
-        }
+        
+        rb2D.MovePosition(rb2D.position + movement * speed * Time.fixedDeltaTime );
     }
 
     private void OnTriggerEnter2D(Collider2D other)
